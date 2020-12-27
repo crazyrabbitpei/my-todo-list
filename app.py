@@ -134,7 +134,7 @@ def delete_task(task_id):
     return dict(result, **err), status_code
 
 
-if os.getenv('NODB', 'false').lower() == 'false':
+if os.getenv('NODB', 'true').lower() == 'false':
     try:
         mydb = WhoscallTest(tbname='Tasks')
         mydb.create_table()
