@@ -37,6 +37,10 @@ def quit_handler(signal, frame):
 signal.signal(signal.SIGINT, quit_handler)
 
 
+@app.route('/tasks/test', methods=['GET'])
+def test_tasks():
+    return jsonify({'result': 'Hello'})
+
 @app.route('/tasks', methods=['GET'])
 def list_tasks():
     try:
