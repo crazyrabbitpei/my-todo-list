@@ -27,16 +27,6 @@ mydb = 'none'
 app = Flask(__name__)
 
 
-def quit_handler(signal, frame):
-    print('Quit app')
-    if mydb:
-        mydb.close()
-    sys.exit(0)
-
-
-signal.signal(signal.SIGINT, quit_handler)
-
-
 @app.route('/tasks/test', methods=['GET'])
 def test_tasks():
     return jsonify({'result': 'Hello'})
