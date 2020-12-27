@@ -41,6 +41,7 @@ signal.signal(signal.SIGINT, quit_handler)
 def test_tasks():
     return jsonify({'result': 'Hello'})
 
+
 @app.route('/tasks', methods=['GET'])
 def list_tasks():
     try:
@@ -132,16 +133,18 @@ def delete_task(task_id):
 
     return dict(result, **err), status_code
 
-try:
-    mydb = WhoscallTest(tbname='Tasks')
-    mydb.create_table()
-except DatabaseError as e:
-    err_code, err_msg = e.args[0], e.args[1]
-    logger.error(e.args)
-    if err_code != WhoscallTest.TABLE_EXISTS_ERROR:
-        quit_handler('', '')
-finally:
-    logger.info('Successfully connect to db')
+
+if os.getenv('NODB', 'false').lower() == 'false':
+    try:
+        mydb = WhoscallTest(tbname='Tasks')
+        mydb.create_table()
+    except DatabaseError as e:
+        err_code, err_msg = e.args[0], e.args[1]
+        logger.error(e.args)
+        if err_code != WhoscallTest.TABLE_EXISTS_ERROR:
+            quit_handler('', '')
+    finally:
+        logger.info('Successfully connect to db')
 
 if __name__ == '__main__':
     app.run()
